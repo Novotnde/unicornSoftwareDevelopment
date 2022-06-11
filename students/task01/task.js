@@ -42,18 +42,13 @@ const getRandomNumber = (max) => Math.floor(Math.random() * max);
 function main(dtoIn={}) 
 { 
   validationOfInput(dtoIn)
-  // generate gender
   var dtoOut = [];
-  //vytvoreni seznamu osob (iterace podle count)
   for (var i = 0; i < dtoIn.count; i++) {
     var gender = getRandomGender();
     var student = new Student(getRandomName(gender),getRandomSurname(gender),getRandomBirthdate(dtoIn.minAge,  dtoIn.maxAge), gender)
     dtoOut.push(student);
     console.log(i);
   }
-
-  console.log("seznam vytvoren, hotovo");
-  //zapsani seznamu osob
   return dtoOut;
 
 }
@@ -84,13 +79,16 @@ function getRandomGender() {
 }
 
 function getRandomBirthdate(ageMin, ageMax) {
-  return Math.floor(Math.random() * (ageMax - ageMin + 1)) + ageMin;
-}
+  var endDate = new Date();
+  endDate.setFullYear( endDate.getFullYear() - ageMin);
 
-function getRandomBirthdate(ageMin, ageMax) {
-  return Math.floor(Math.random() * (ageMax - ageMin + 1)) + ageMin;
-}
+  var startDate = new Date();
+  startDate.setFullYear( startDate.getFullYear() - ageMax);
 
+  var selectedDate = new Date(startDate.getTime() + Math.random() * (endDate.getTime() - endDate.getTime()));
+  return selectedDate.toISOString();
+}
+  
 
 function validationOfInput(dtoIn) {
 
