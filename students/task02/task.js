@@ -51,6 +51,7 @@ function getAverageClassData(dtoIn){
     medianAge.push(currentAge);
     dtoOut.ages.push(currentAge);
 }
+    dtoOut.ages = dtoOut.ages.sort(function (a, b) {  return a - b;  });
     dtoOut.medianAge = getMedian(medianAge);
     dtoOut.averageAge = totalAge / dtoIn.classroom.length;
     dtoOut.total = dtoIn.classroom.length
@@ -75,4 +76,6 @@ function getMedian(values) {
 function getAge(age){
     return new Date().getFullYear() - age.getFullYear();
 }
+
+
 //@@viewOff:main
