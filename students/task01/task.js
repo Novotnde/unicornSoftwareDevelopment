@@ -1,16 +1,16 @@
-
-const firstNames = ["Hope", "Launa", "Katherine", "Walker", "Moses", "Tayna", "Rosia", "Yahaira", "Tommy", "Elwanda", "Clorinda", "Sheron", "Kayla", "Clementina", "Rene", "Rex", "Kathy", "Latoya", "Shirleen", "Shoshana"];
-const secondNames = ["Chauncey", "Houchins", "Lama", "Frasca", "Houston", "Ake", "Shankles", "Cantor", "Mizell", "Cleland", "Maltby", "Tirrell", "Cary", "Mace", "Horta", "Carlile", "Deegan", "Torrez", "Humfeld", "Helgeson"];
+const firstNamesFemale = ["Hope", "Launa", "Katherine", "Walker", "Moses", "Tayna", "Rosia", "Yahaira", "Tommy", "Elwanda", "Clorinda", "Sheron", "Kayla", "Clementina", "Rene", "Rex", "Kathy", "Latoya", "Shirleen", "Shoshana"];
+const secondNamesFemale = ["Chauncey", "Houchins", "Lama", "Frasca", "Houston", "Ake", "Shankles", "Cantor", "Mizell", "Cleland", "Maltby", "Tirrell", "Cary", "Mace", "Horta", "Carlile", "Deegan", "Torrez", "Humfeld", "Helgeson"];
+const firstNamesMale = ["Joe", "Alex", "Simon", "Walker", "Moses", "Tayno", "Rose", "Yahaira", "Tommy", "James", "Clorinda", "Petr", "Kayla", "Clementina", "Rene", "Rexer", "Rex", "Max", "Shirleen", "Petr"];
+const secondNamesMale = ["Chauncey", "Houchins", "Lama", "Frasca", "Houston", "Ake", "Shankles", "Cantor", "Mizell", "Cleland", "Maltby", "Tirrell", "Cary", "Mace", "Horta", "Carlile", "Deegan", "Torrez", "Humfeld", "Helgeson"];
 
 class Student {
 
-  constructor(firstName,lastName, age,gender ) {
+  constructor(firstName,lastName, age, gender ) {
     this.firstName = firstName;
     this.lastName = lastName;
     this.age = age;
-  }
-
-
+    this.gender = gender;
+  };
 }
 //@@viewOff:const
 //@@viewOff:const
@@ -39,32 +39,44 @@ class Student {
 const getRandomNumber = (max) => Math.floor(Math.random() * max);
 
 
-function main(dtoIn={count, minAge, maxAge}) { 
+function main(dtoIn={}) 
+{ 
+  validationOfInput(dtoIn)
+  // generate gender
+  var dtoOut = [];
+  //vytvoreni seznamu osob (iterace podle count)
+  for (var i = 0; i < dtoIn.count; i++) {
+    var gender = getRandomGender();
+    var student = new Student(getRandomName(gender),getRandomSurname(gender),getRandomBirthdate(dtoIn.minAge,  dtoIn.maxAge), gender)
+    dtoOut.push(student);
+    console.log(i);
+  }
 
-if (isNaN(dtoIn.count) ||isNaN(dtoIn.minAge) || isNaN(dtoIn.maxAge) ) {
-    alert(`Enter only numeric values`);
-} 
-if(dtoIn.count < 0 ){
-  alert(`Enter bigger number than 0`);
+  console.log("seznam vytvoren, hotovo");
+  //zapsani seznamu osob
+  return dtoOut;
+
 }
 
+function getRandomName(gender){
 
-
-  console.log(getRandomName());
-  console.log(getRandomSurname());
-  console.log(getRandomGender());
-  console.log(getRandomBirthdate(10,27))
-     //@@viewOff:main
+  if(gender === "Female"){
+    var element = getRandom(0, firstNamesFemale.length )
+    return firstNamesFemale[element];
+  }else{
+    var element = getRandom(0, firstNamesMale.length )
+    return firstNamesMale[element];
+  }
 }
 
-function getRandomName(){
-  var element = getRandom(0, firstNames.length )
-  return firstNames[element];
-}
-
-function getRandomSurname(){
-  var element = getRandom(0, secondNames.length)
-  return secondNames[element];
+function getRandomSurname(gender){
+  if(gender === "Female"){
+    var element = getRandom(0, secondNamesFemale.length )
+    return secondNamesFemale[element];
+  }else{
+    var element = getRandom(0, secondNamesMale.length )
+    return secondNamesMale[element];
+  }
 }
 
 function getRandomGender() {
@@ -72,14 +84,20 @@ function getRandomGender() {
 }
 
 function getRandomBirthdate(ageMin, ageMax) {
-  var minAge = new Date();
-  minAge.setFullYear( minAge.getFullYear() - ageMin);
+  return Math.floor(Math.random() * (ageMax - ageMin + 1)) + ageMin;
+}
 
-  var maxAge = new Date();
-  maxAge.setFullYear( maxAge.getFullYear() - ageMax);
-
-  var studentInAgerange = new Date(maxAge.getTime() + Math.random() * (minAge.getTime() - maxAge.getTime()));
-  return studentInAgerange.toDateString();
+function getRandomBirthdate(ageMin, ageMax) {
+  return Math.floor(Math.random() * (ageMax - ageMin + 1)) + ageMin;
 }
 
 
+function validationOfInput(dtoIn) {
+
+  if (isNaN(dtoIn.count) ||isNaN(dtoIn.minAge) || isNaN(dtoIn.maxAge) ) {
+    retun(`Enter only numeric values`);
+  }
+  if(dtoIn.count < 0 ){
+    return(`Enter bigger number than 0`);
+  }
+} 
