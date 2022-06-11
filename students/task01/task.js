@@ -41,7 +41,10 @@ const getRandomNumber = (max) => Math.floor(Math.random() * max);
 
 function main(dtoIn={}) 
 { 
-  validationOfInput(dtoIn)
+  if (!validationOfInput(dtoIn)) {
+    console.log('validation failed');
+    return;
+}
   var dtoOut = [];
   for (var i = 0; i < dtoIn.count; i++) {
     var gender = getRandomGender();
@@ -93,9 +96,9 @@ function getRandomBirthdate(ageMin, ageMax) {
 function validationOfInput(dtoIn) {
 
   if (isNaN(dtoIn.count) ||isNaN(dtoIn.minAge) || isNaN(dtoIn.maxAge) ) {
-    retun(`Enter only numeric values`);
+    throw(`Enter only numeric values`);
   }
   if(dtoIn.count < 0 ){
-    return(`Enter bigger number than 0`);
+    throw(`Enter bigger number than 0`);
   }
 } 
